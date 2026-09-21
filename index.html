@@ -1,0 +1,365 @@
+<title>Cabine KAIROS F.L</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#0d1017; --surface:#161b26; --raised:#1d2433; --line:#252d3d;
+  --ink:#e8eaf0; --dim:#8d97ab; --faint:#5d6579;
+  --gold:#e0a82e; --gold-soft:rgba(224,168,46,.13);
+  --ok:#3fa96b; --ok-soft:rgba(63,169,107,.14);
+  --warn:#d98324; --warn-soft:rgba(217,131,36,.14);
+  --stop:#d8544f; --stop-soft:rgba(216,84,79,.14);
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --ground:#f6f5f1; --surface:#fffefc; --raised:#f1efe9; --line:#dfdcd2;
+    --ink:#1b2027; --dim:#5f6674; --faint:#8b91a0;
+    --gold:#9a6f12; --gold-soft:rgba(154,111,18,.1);
+    --ok:#2d7d4e; --ok-soft:rgba(45,125,78,.1);
+    --warn:#a85f13; --warn-soft:rgba(168,95,19,.1);
+    --stop:#b23a35; --stop-soft:rgba(178,58,53,.1);
+    --shadow:0 1px 2px rgba(20,18,12,.07);
+  }
+}
+:root[data-theme="light"]{
+  --ground:#f6f5f1; --surface:#fffefc; --raised:#f1efe9; --line:#dfdcd2;
+  --ink:#1b2027; --dim:#5f6674; --faint:#8b91a0;
+  --gold:#9a6f12; --gold-soft:rgba(154,111,18,.1);
+  --ok:#2d7d4e; --ok-soft:rgba(45,125,78,.1);
+  --warn:#a85f13; --warn-soft:rgba(168,95,19,.1);
+  --stop:#b23a35; --stop-soft:rgba(178,58,53,.1);
+  --shadow:0 1px 2px rgba(20,18,12,.07);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:Archivo,"Segoe UI",system-ui,sans-serif;
+  font-size:15px; line-height:1.55; margin:0;
+  padding-block:28px 64px; padding-inline:16px;
+}
+.wrap{max-width:940px; margin:0 auto; display:flex; flex-direction:column; gap:34px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+
+/* cabecalho */
+.top{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; justify-content:space-between}
+.marca{display:flex; flex-direction:column; gap:3px}
+.marca .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold)}
+h1{font-size:27px; font-weight:700; margin:0; letter-spacing:-.015em; text-wrap:balance}
+.sub{color:var(--dim); font-size:13.5px; margin:0}
+
+/* faixa de estado */
+.estado{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:9px; overflow:hidden}
+.estado div{background:var(--surface); padding:13px 15px}
+.estado dt{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--faint); margin:0 0 5px}
+.estado dd{margin:0; font-size:14px; font-weight:600}
+
+/* secoes */
+section{display:flex; flex-direction:column; gap:15px}
+.cab{display:flex; flex-wrap:wrap; align-items:baseline; gap:11px; justify-content:space-between;
+  border-bottom:1px solid var(--line); padding-bottom:9px}
+h2{font-size:12px; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--gold); margin:0; font-family:"IBM Plex Mono",monospace}
+.nota{color:var(--dim); font-size:13px; margin:0; max-width:62ch}
+
+/* pills */
+.pill{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600;
+  padding:3px 9px; border-radius:99px; font-family:"IBM Plex Mono",monospace; letter-spacing:.04em;
+  white-space:nowrap}
+.p-ok{background:var(--ok-soft); color:var(--ok)}
+.p-warn{background:var(--warn-soft); color:var(--warn)}
+.p-stop{background:var(--stop-soft); color:var(--stop)}
+.p-gold{background:var(--gold-soft); color:var(--gold)}
+
+/* aquecimento */
+.barra{height:7px; background:var(--raised); border-radius:99px; overflow:hidden}
+.barra i{display:block; height:100%; background:var(--gold); border-radius:99px;
+  transition:width .35s ease; width:0}
+.fase{border:1px solid var(--line); border-radius:9px; background:var(--surface); overflow:hidden}
+.fase > header{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+  padding:11px 15px; background:var(--raised); border-bottom:1px solid var(--line)}
+.fase h3{margin:0; font-size:14.5px; font-weight:600}
+.fase .quanto{font-size:12px; color:var(--dim)}
+.passos{list-style:none; margin:0; padding:0}
+.passos li{border-top:1px solid var(--line)}
+.passos li:first-child{border-top:none}
+.passo{display:flex; gap:11px; align-items:flex-start; padding:11px 15px; cursor:pointer;
+  width:100%; text-align:left; background:none; border:none; color:inherit; font:inherit}
+.passo:hover{background:var(--raised)}
+.passo:focus-visible{outline:2px solid var(--gold); outline-offset:-2px}
+.passo[disabled]{cursor:default; opacity:.65}
+.caixa{flex:0 0 auto; width:17px; height:17px; border:1.5px solid var(--faint); border-radius:4px;
+  margin-top:2px; display:grid; place-items:center; font-size:11px; color:var(--ground)}
+.passo[aria-pressed="true"] .caixa{background:var(--ok); border-color:var(--ok)}
+.passo[aria-pressed="true"] .txt{color:var(--dim); text-decoration:line-through;
+  text-decoration-color:var(--faint)}
+.txt{flex:1; font-size:14px}
+.txt small{display:block; color:var(--faint); font-size:12px; text-decoration:none}
+
+/* mensagens */
+.msgs{display:flex; flex-direction:column; gap:13px}
+.msg{border:1px solid var(--line); border-radius:9px; background:var(--surface); overflow:hidden}
+.msg > header{display:flex; flex-wrap:wrap; gap:9px; align-items:center; justify-content:space-between;
+  padding:11px 15px; border-bottom:1px solid var(--line)}
+.msg h3{margin:0; font-size:14.5px; font-weight:600; display:flex; align-items:center; gap:9px}
+.copy{margin:0; padding:13px 15px; font-family:"IBM Plex Mono",monospace; font-size:12.5px;
+  line-height:1.72; color:var(--ink); white-space:pre-wrap; word-break:break-word;
+  background:var(--ground); border-bottom:1px solid var(--line)}
+.copy b{color:var(--gold); font-weight:500}
+.precos{display:flex; flex-wrap:wrap; gap:6px; padding:11px 15px}
+.acoes{display:flex; gap:7px; flex-wrap:wrap; padding:0 15px 13px}
+button.act{font:inherit; font-size:12.5px; font-weight:600; padding:6px 13px; border-radius:7px;
+  border:1px solid var(--line); background:var(--raised); color:var(--ink); cursor:pointer}
+button.act:hover{border-color:var(--gold)}
+button.act:focus-visible{outline:2px solid var(--gold); outline-offset:1px}
+button.act[aria-pressed="true"]{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+button.act.neg[aria-pressed="true"]{background:var(--stop-soft); border-color:var(--stop); color:var(--stop)}
+button.act[disabled]{opacity:.5; cursor:default}
+
+/* pendencias */
+.pend{list-style:none; margin:0; padding:0; border:1px solid var(--line); border-radius:9px;
+  background:var(--surface); overflow:hidden}
+.pend li{border-top:1px solid var(--line)}
+.pend li:first-child{border-top:none}
+.pend .passo{align-items:flex-start}
+.quem{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--faint); text-decoration:none}
+
+/* regras */
+.regras{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:11px}
+.regra{border:1px solid var(--line); border-left:2px solid var(--gold); border-radius:7px;
+  background:var(--surface); padding:12px 14px}
+.regra dt{font-size:13px; font-weight:600; margin:0 0 3px}
+.regra dd{margin:0; color:var(--dim); font-size:12.5px}
+
+.rodape{color:var(--faint); font-size:12px; border-top:1px solid var(--line); padding-top:15px;
+  display:flex; flex-wrap:wrap; gap:9px; justify-content:space-between}
+#sync{font-family:"IBM Plex Mono",monospace; font-size:11px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+  <div class="top">
+    <div class="marca">
+      <span class="eyebrow">Kairos F.L &middot; Supermáquina</span>
+      <h1>Cabine de Controle</h1>
+      <p class="sub">Aquecimento do número, aprovação das mensagens e o que trava a Campanha 001.</p>
+    </div>
+    <span class="pill p-stop" id="sel-congelada">Campanha 001 congelada</span>
+  </div>
+
+  <dl class="estado">
+    <div><dt>Número de disparo</dt><dd class="mono">+55 11 92157-1498</dd></div>
+    <div><dt>Sessão WhatsApp</dt><dd>Conectada</dd></div>
+    <div><dt>Entrega validada</dt><dd class="mono">…97@c.us</dd></div>
+    <div><dt>Leads com celular</dt><dd class="mono">344</dd></div>
+  </dl>
+
+  <section>
+    <div class="cab">
+      <h2>1 &middot; Aquecimento do número</h2>
+      <span class="pill p-gold mono" id="prog-txt">0 de 12</span>
+    </div>
+    <p class="nota">Número novo que dispara 25 mensagens frias no primeiro dia é o padrão mais banido que existe. O que protege não é o intervalo entre mensagens — é a conta ter histórico, receber mensagens e crescer devagar. Marque cada etapa conforme cumprir.</p>
+    <div class="barra"><i id="prog-bar"></i></div>
+    <div id="fases"></div>
+  </section>
+
+  <section>
+    <div class="cab">
+      <h2>2 &middot; Mensagens por segmento</h2>
+      <span class="pill p-gold mono" id="aprov-txt">0 de 10 aprovadas</span>
+    </div>
+    <p class="nota">Nenhuma sai sem aprovação humana (Regra 1). Todo preço citado vem do catálogo oficial, sempre com "a partir de" (Regra 6). As chaves entre <span class="mono">{ }</span> são spintax: o motor sorteia uma opção por lead, para nunca repetir a mesma mensagem em lote (Regra 3).</p>
+    <div class="msgs" id="msgs"></div>
+  </section>
+
+  <section>
+    <div class="cab">
+      <h2>3 &middot; Decisões pendentes</h2>
+      <span class="pill p-warn mono" id="pend-txt">0 de 7 resolvidas</span>
+    </div>
+    <p class="nota">O que precisa de uma resposta de vocês antes do descongelamento. As quatro primeiras podem colocar mensagem no número errado ou preço errado na frente de um cliente.</p>
+    <ul class="pend" id="pend"></ul>
+  </section>
+
+  <section>
+    <div class="cab"><h2>4 &middot; Regras que o código aplica sozinho</h2></div>
+    <dl class="regras">
+      <div class="regra"><dt>Janela de envio</dt><dd>Só terça e quinta, das 10h às 11h e das 15h às 17h. Fora disso o bot recusa e revalida a cada mensagem do lote.</dd></div>
+      <div class="regra"><dt>Teto diário</dt><dd>25 mensagens. O contador não zera por reinício do bot.</dd></div>
+      <div class="regra"><dt>Ritmo</dt><dd>Pausa aleatória de 30 a 90 segundos entre envios. 25 mensagens levam cerca de 25 minutos.</dd></div>
+      <div class="regra"><dt>Opt-out</dt><dd>"SAIR" silencia o lead para sempre, e ele nunca mais entra em fila.</dd></div>
+      <div class="regra"><dt>Campanha congelada</dt><dd>Com o arquivo de congelamento presente, <span class="mono">--fila</span> e <span class="mono">--agora</span> se recusam a rodar.</dd></div>
+      <div class="regra"><dt>Número inexistente</dt><dd>Antes de enviar, o bot pergunta ao WhatsApp se o número tem conta. Se não tiver, pula sem gastar o teto do dia.</dd></div>
+    </dl>
+  </section>
+
+  <div class="rodape">
+    <span>Marcações ficam salvas e aparecem para Luciano e Felipe.</span>
+    <span id="sync">…</span>
+  </div>
+</div>
+
+<script>
+const FASES=[
+ {n:"Fase 0 — Preparação",q:"Nenhum disparo frio",passos:[
+  {id:"p1",t:"Perfil do WhatsApp Business completo",s:"Foto, nome do negócio e descrição — conta sem perfil parece robô"},
+  {id:"p2",t:"Três dias de conversa real",s:"Falar com conhecidos, responder, ser respondido"},
+  {id:"p3",t:"Receber mensagens de fora",s:"Corrige a proporção entrada/saída, que é o sinal mais pesado"},
+  {id:"p4",t:"Entrar em pelo menos um grupo",s:"Atividade normal de uma conta de verdade"}]},
+ {n:"Semana 1",q:"5 por janela · 10 na semana",passos:[
+  {id:"s1a",t:"Terça — 5 mensagens",s:"Comece pelos 5 leads do Maps: dados validados, maior chance de resposta"},
+  {id:"s1b",t:"Quinta — 5 mensagens",s:""}]},
+ {n:"Semana 2",q:"10 por janela · 20 na semana",passos:[
+  {id:"s2a",t:"Terça — 10 mensagens",s:""},{id:"s2b",t:"Quinta — 10 mensagens",s:""}]},
+ {n:"Semana 3",q:"15 por janela · 30 na semana",passos:[
+  {id:"s3a",t:"Terça — 15 mensagens",s:""},{id:"s3b",t:"Quinta — 15 mensagens",s:""}]},
+ {n:"Semana 4 — teto pleno",q:"25 por janela · 50 na semana",passos:[
+  {id:"s4a",t:"Terça — 25 mensagens",s:"Só aqui o cap de compliance é usado inteiro"},
+  {id:"s4b",t:"Quinta — 25 mensagens",s:""}]}];
+
+const MSGS=[
+ {id:"maps",n:"Pet do Maps",tag:"5 leads · nota real",novo:false,
+  c:"Ola {tudo bem|boa tarde|tudo certo}? Aqui e da KAIROS F.L. Vi que o {seu negocio|seu pet shop} esta {muito bem avaliado|com nota otima} no Google, parabens! A gente desenvolve {sistemas de gestao|paineis administrativos} e montei uma demonstracao com a nota real do seu negocio e botao de WhatsApp. Posso te enviar o link? Voce avalia o valor em 10 segundos.",p:[]},
+ {id:"pet",n:"Pet shop e veterinária",tag:"em campanha",novo:false,
+  c:"Ola {tudo bem|boa tarde}! Falo pela KAIROS F.L. Desenvolvemos {sistema para pet shop e clinica veterinaria|gestao completa para pet} com agenda de banho e tosa, historico de vacinas e controle de produtos (a partir de R$ 1.800). Preparo uma demonstracao com os dados do seu negocio?",
+  p:["Controle de estoque — R$ 1.800"]},
+ {id:"beleza",n:"Beleza",tag:"em campanha",novo:false,
+  c:"Ola {tudo bem|boa tarde}! Sou da KAIROS F.L. Trabalhamos com {agenda online|agendamento pelo site} que confirma e lembra seus clientes pelo WhatsApp automaticamente (a partir de R$ 1.200) e gestao de Instagram a partir de R$ 781/mes. Posso montar uma demonstracao com os dados do seu negocio?",
+  p:["Agenda online — R$ 1.200","Instagram básico — R$ 781/mês"]},
+ {id:"odonto",n:"Odontologia",tag:"em campanha",novo:false,
+  c:"Ola {tudo bem|boa tarde}! Falo pela KAIROS F.L. Desenvolvemos {sistema para clinica|gestao de pacientes} com prontuario digital, agenda por profissional e lembrete de consulta (a partir de R$ 2.800, conforme a LGPD). Preparo uma demonstracao com a sua clinica?",
+  p:["Clínica e consultório — R$ 2.800"]},
+ {id:"estetica",n:"Estética",tag:"em campanha",novo:false,
+  c:"Ola {tudo bem|boa tarde}! Sou da KAIROS F.L. Temos {gestao completa para estetica|sistema com agenda, comissoes e pacotes de sessoes} e controle de estoque de produtos (a partir de R$ 1.800). Faz sentido eu te mandar uma demonstracao com os seus dados?",
+  p:["Controle de estoque — R$ 1.800"]},
+ {id:"restaurante",n:"Restaurante e pizzaria",tag:"33 leads · Ribeirão",novo:true,
+  c:"Ola {tudo bem|boa tarde}! Falo pela KAIROS F.L. Desenvolvemos {comanda e cardapio digital|sistema de comanda com cardapio online} para restaurante e pizzaria (a partir de R$ 2.200) e catalogo com pedido direto pelo WhatsApp (a partir de R$ 990). Preparo uma demonstracao com o seu cardapio?",
+  p:["Comanda e cardápio digital — R$ 2.200","Catálogo com pedido — R$ 990"]},
+ {id:"padaria",n:"Padaria e confeitaria",tag:"24 leads · Ribeirão",novo:true,
+  c:"Ola {tudo bem|boa tarde}! Sou da KAIROS F.L. Temos {sistema de comanda e cardapio digital|PDV com cardapio online} para padaria e confeitaria (a partir de R$ 2.200) e controle de estoque e fornecedores (a partir de R$ 1.800). Faz sentido eu te mandar uma demonstracao?",
+  p:["Comanda e cardápio digital — R$ 2.200","Controle de estoque — R$ 1.800"]},
+ {id:"oficina",n:"Oficina mecânica",tag:"23 leads · Ribeirão",novo:true,
+  c:"Ola {tudo bem|boa tarde}! Falo pela KAIROS F.L. Desenvolvemos {gestao para oficina|sistema de ordens de servico} com abertura de OS, status por etapa, fotos e aprovacao do cliente (a partir de R$ 1.800), mais orcamentos e recibos automaticos (a partir de R$ 990). Preparo uma demonstracao com a sua oficina?",
+  p:["Oficina e prestadores — R$ 1.800","Orçamentos e recibos — R$ 990"]},
+ {id:"salao",n:"Salão e cabeleireiro",tag:"21 leads · Ribeirão",novo:true,
+  c:"Ola {tudo bem|boa tarde}! Sou da KAIROS F.L. Trabalhamos com {agenda online|agendamento pelo site} que confirma e lembra seus clientes pelo WhatsApp (a partir de R$ 1.200) e controle de comissoes da equipe (a partir de R$ 1.400). Posso montar uma demonstracao com os dados do seu salao?",
+  p:["Agenda online — R$ 1.200","Gestão de equipe — R$ 1.400"]},
+ {id:"lanchonete",n:"Lanchonete e bar",tag:"21 leads · Ribeirão",novo:true,
+  c:"Ola {tudo bem|boa tarde}! Falo pela KAIROS F.L. Temos {cardapio digital com pedido pelo WhatsApp|catalogo online com pedido direto} a partir de R$ 990, e sistema completo de comanda e PDV a partir de R$ 2.200. Preparo uma demonstracao com o seu cardapio?",
+  p:["Catálogo com pedido — R$ 990","Comanda e cardápio digital — R$ 2.200"]}];
+
+const PEND=[
+ {id:"d1",t:"Qual é o telefone do Pet Shop Bom Pastor?",s:"O CRM tem 5511921912023 (SP) e a coleta do Maps achou 554532523145 (Toledo/PR). Um dos dois é de outra empresa.",q:"Luciano"},
+ {id:"d2",t:"Jardim Santa Teresinha entra ou sai da campanha?",s:"Está cadastrado como \"nome a validar\" e mesmo assim entrou na fila.",q:"Luciano"},
+ {id:"d3",t:"O R$ 781 do manual de objeções está errado?",s:"Ele responde \"sistemas a partir de R$ 781\", mas no catálogo R$ 781 é piso de mensalidade — painel começa em R$ 2.500. A Camada 1 pode citar valor 3x menor.",q:"Luciano + Felipe"},
+ {id:"d4",t:"Rei da Esfiha ou Edilson Salgados?",s:"O fixo (16) 3011-1155 aparece com os dois nomes, em planilhas diferentes.",q:"Felipe"},
+ {id:"d5",t:"Aprovar as 5 copys dos nichos novos",s:"Restaurante, padaria, oficina, salão e lanchonete — preços conferidos no catálogo, faltam os olhos de vocês.",q:"Luciano"},
+ {id:"d6",t:"Contador diário roda em UTC, janela em hora local",s:"O teto zera às 21h no horário de Brasília. Hoje não atrapalha, mas quebra se as janelas mudarem.",q:"Felipe"},
+ {id:"d7",t:"Trocar o segredo padrão da ponte",s:"Sem o .env, a ponte sobe com um segredo que está escrito no repositório, numa porta aberta.",q:"Luciano + Felipe"}];
+
+let db=null, estado={aq:{},ms:{},pd:{}}, podeEscrever=true;
+const $=(s)=>document.querySelector(s);
+const esc=(s)=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const spin=(s)=>esc(s).replace(/\{[^{}]*\}/g,m=>'<b>'+m+'</b>');
+
+function sync(t,cor){const e=$('#sync'); if(e){e.textContent=t; e.style.color=cor||'var(--faint)';}}
+
+const fila={};
+async function salvar(doc,dados){
+  if(!db||!podeEscrever) return;
+  fila[doc]=dados;
+  if(fila[doc+'!']) return;
+  fila[doc+'!']=true;
+  try{
+    while(fila[doc]){const d=fila[doc]; fila[doc]=null; await db.doc('painel/'+doc).set(d);}
+    sync('salvo','var(--ok)');
+  }catch(e){
+    if(e&&e.code==='invalid_argument'){podeEscrever=false; sync('somente leitura','var(--warn)'); render();}
+    else sync('não salvou','var(--stop)');
+  }finally{fila[doc+'!']=false;}
+}
+
+function pintaAquecimento(){
+  const alvo=$('#fases'); if(!alvo) return;
+  let feitos=0,total=0;
+  alvo.innerHTML=FASES.map(f=>{
+    const itens=f.passos.map(p=>{
+      total++; const on=!!estado.aq[p.id]; if(on)feitos++;
+      return '<li><button class="passo" type="button" data-aq="'+p.id+'" aria-pressed="'+on+'"'+(db&&podeEscrever?'':' disabled')+
+        '><span class="caixa" aria-hidden="true">'+(on?'✓':'')+'</span><span class="txt">'+esc(p.t)+
+        (p.s?'<small>'+esc(p.s)+'</small>':'')+'</span></button></li>';}).join('');
+    return '<div class="fase" style="margin-bottom:11px"><header><h3>'+esc(f.n)+
+      '</h3><span class="quanto mono">'+esc(f.q)+'</span></header><ul class="passos">'+itens+'</ul></div>';
+  }).join('');
+  const pct=total?Math.round(feitos/total*100):0;
+  $('#prog-bar').style.width=pct+'%';
+  $('#prog-txt').textContent=feitos+' de '+total;
+}
+
+function pintaMensagens(){
+  const alvo=$('#msgs'); if(!alvo) return;
+  let ok=0;
+  alvo.innerHTML=MSGS.map(m=>{
+    const st=estado.ms[m.id]||'rascunho'; if(st==='aprovado')ok++;
+    const pill=st==='aprovado'?'<span class="pill p-ok">Aprovada</span>'
+      :st==='recusada'?'<span class="pill p-stop">Recusada</span>'
+      :'<span class="pill p-warn">Rascunho</span>';
+    return '<article class="msg"><header><h3>'+esc(m.n)+
+      (m.novo?' <span class="pill p-gold">nova</span>':'')+'</h3>'+pill+
+      '<span class="quem">'+esc(m.tag)+'</span></header>'+
+      '<p class="copy">'+spin(m.c)+'</p>'+
+      (m.p.length?'<div class="precos">'+m.p.map(x=>'<span class="pill p-gold">'+esc(x)+'</span>').join('')+'</div>':'')+
+      '<div class="acoes"><button class="act" type="button" data-ms="'+m.id+'" data-v="aprovado" aria-pressed="'+
+      (st==='aprovado')+'"'+(db&&podeEscrever?'':' disabled')+'>Aprovar</button>'+
+      '<button class="act neg" type="button" data-ms="'+m.id+'" data-v="recusada" aria-pressed="'+
+      (st==='recusada')+'"'+(db&&podeEscrever?'':' disabled')+'>Recusar</button></div></article>';
+  }).join('');
+  $('#aprov-txt').textContent=ok+' de '+MSGS.length+' aprovadas';
+}
+
+function pintaPendencias(){
+  const alvo=$('#pend'); if(!alvo) return;
+  let ok=0;
+  alvo.innerHTML=PEND.map(p=>{
+    const on=!!estado.pd[p.id]; if(on)ok++;
+    return '<li><button class="passo" type="button" data-pd="'+p.id+'" aria-pressed="'+on+'"'+
+      (db&&podeEscrever?'':' disabled')+'><span class="caixa" aria-hidden="true">'+(on?'✓':'')+
+      '</span><span class="txt">'+esc(p.t)+'<small>'+esc(p.s)+'</small>'+
+      '<small class="quem">decide: '+esc(p.q)+'</small></span></button></li>';
+  }).join('');
+  $('#pend-txt').textContent=ok+' de '+PEND.length+' resolvidas';
+}
+
+function render(){pintaAquecimento();pintaMensagens();pintaPendencias();}
+
+document.addEventListener('click',(ev)=>{
+  const b=ev.target.closest('button[data-aq],button[data-ms],button[data-pd]');
+  if(!b||b.disabled) return;
+  if(b.dataset.aq){const k=b.dataset.aq; estado.aq[k]=!estado.aq[k]; render(); salvar('aquecimento',estado.aq);}
+  else if(b.dataset.pd){const k=b.dataset.pd; estado.pd[k]=!estado.pd[k]; render(); salvar('pendencias',estado.pd);}
+  else{const k=b.dataset.ms,v=b.dataset.v; estado.ms[k]=(estado.ms[k]===v)?'rascunho':v; render(); salvar('mensagens',estado.ms);}
+});
+
+render();
+
+(async()=>{
+  try{ db = await claude.use('db'); }catch(_){ db=null; }
+  if(!db){ sync('sem sincronização'); render(); return; }
+  sync('conectado','var(--ok)');
+  const liga=(doc,chave)=>{
+    try{
+      db.doc('painel/'+doc).onSnapshot(
+        (s)=>{ if(s.exists){ estado[chave]=Object.assign({},s.data()); render(); } },
+        (e)=>{ sync(e&&e.code==='revoked'?'sincronização encerrada':'sincronização instável','var(--warn)'); }
+      );
+    }catch(_){}
+  };
+  liga('aquecimento','aq'); liga('mensagens','ms'); liga('pendencias','pd');
+  render();
+})();
+</script>
